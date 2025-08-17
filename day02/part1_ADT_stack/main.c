@@ -41,12 +41,37 @@ bool isEmpty(Stack* stack);
 
 // 2. 연결리스트 활용
 
-
-
-
 int main() {
+	// 스택 구조체를 실체화
+	Stack stack; // 스택 엔티티(Entity)
+	int value;	 // 함수를 통해서 값을 전달받는 용도로 쓰이는 저장공간
 
+	// 스택 초기화
+	initStack(&stack); // 해당 스택의 주소값을 전달해야 한다.
 
+	// 데이터 삽입
+	push(&stack, 10);
+	push(&stack, 20);
+	push(&stack, 30);
+
+	// 스택 내용 출력
+	display(&stack);
+
+	// peek 연산
+	// top인덱스의 값을 반환받는다.
+	// 반환받을 때 main()함수에 선언해놓은 value 변수에 담아서 반환받는다.
+	int got = peek(&stack, &value); // 함수 내부에서 value에 접근할 수 있도록
+	// value의 주소값(&)을 전달해준다.
+	if (got) {
+		printf("스택의 맨 위 요소 값: %d\n", value);
+	}
+
+	// pop 연산
+	// 맨 위의 요소를 제거하여 value에 담고 인덱스는 1감소시킨다.
+	if (pop(&stack, &value)) {
+		printf("팝(pop)한 요소: %d\n", value);
+		display(&stack);
+	}
 	return 0;
 }
 
@@ -86,14 +111,35 @@ bool pop(Stack* stack, int* value) {
 }
 
 bool peek(Stack* stack, int* value) {
-
+	// 만약 스택이 비어있으면 데이터 확인이 불가능할 것이다.
+	if (isEmpty(stack)) {
+		printf("언더플로우");
+		return false;
+	}
+	// 전달받은 포인터변수 value에 stack->data 중 top 위치의 값을 담는다.
+	*value = stack->data[stack->top];
+	return true;
 }
+
 void display(Stack* stack) {
-
+	if (isEmpty(stack)) {
+		printf("언더플로우\n");
+		return;
+	}
+	// top인덱스로부터 1씩 감소하며 데이터를 순회한다.
+	for (int i = stack->top; i>=0 ; i--) {
+		// 해당 데이터가 위치한 인덱스와 함께 그 값을 한 줄에 출력
+		printf("%d. %d\n", i, stack->data[i]);
+	}
 }
-bool isFull(Stack* stack) {
 
+bool isFull(Stack* stack) {
+	// 스택 최대 크기의 1을 뺀 인덱스가 top이면
+	// 데이터가 꽉찬 것이므로, 해당 여부를 반환하면 된다.
+	return stack->top == (MAX_SIZE - 1);
 }
 bool isEmpty(Stack* stack) {
-
+	// -1인덱스는 데이터가 없음을 나타내는 값이므로
+	// 해당 여부를 반환하면 된다.
+	return stack->top == -1;
 }
