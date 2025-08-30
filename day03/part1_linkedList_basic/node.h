@@ -24,6 +24,7 @@
 #ifndef NODE_H
 // ifndef과 endif 사이에 정의하고자 하는 내용을 작성해주면 된다.
 #define NODE_H // 여기서 정의하겠다.
+#include <stdio.h>
 #include <stdlib.h>
 // 노드 구조체 정의
 typedef struct Node {
@@ -77,7 +78,7 @@ void prependNode(Node** head, int data) {
 // 노드를 마지막 노드 뒤에 추가
 void appendNode(Node** head, int data) {
 	// 전달받은 head가 비어있으면 NULL 반환
-	if (*head == NULL) return NULL;
+	if (*head == NULL) return;
 	// 전달받은 head를 current에 저장한 뒤, while문으로 반복적으로 next 속성 순회
 	Node* current = *head; // 외부에서 전달받은 head 이중 포인터에 저장된 노드 주소값을
 	// current 포인터 변수에 저장
